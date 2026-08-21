@@ -29,8 +29,8 @@ def show_result_dialog():
 
     u_ans1 = st.session_state.get("ans1", "").strip().lower()
     u_ans2 = st.session_state.get("ans2", "").strip().lower()
-    u_ans3 = st.session_state.get("ans3", "").strip().lower()  # คำตอบข้อ 3 ใหม่
-    u_ans4 = st.session_state.get("ans4", "").strip().lower()  # คำตอบข้อ 4 ใหม่
+    u_ans3 = st.session_state.get("ans3", "").strip().lower()
+    u_ans4 = st.session_state.get("ans4", "").strip().lower()
 
     # ตรวจข้อ 1
     if u_ans1 == "apple":
@@ -46,15 +46,15 @@ def show_result_dialog():
     else:
         st.error(f"❌ ข้อ 2: ยังไม่ถูกต้อง (คุณตอบ '{u_ans2}')")
 
-    # ตรวจข้อ 3 (เปลี่ยนเป็น banana)
-    if u_ans3 == "banana":
+    # ตรวจข้อ 3 (mango)
+    if u_ans3 == "mango":
         st.success("✅ ข้อ 3: ถูกต้อง")
         score += 1
     else:
         st.error(f"❌ ข้อ 3: ยังไม่ถูกต้อง (คุณตอบ '{u_ans3}')")
 
-    # ตรวจข้อ 4 (เปลี่ยนเป็น water)
-    if u_ans4 == "water":
+    # ตรวจข้อ 4 (pencil)
+    if u_ans4 == "pencil":
         st.success("✅ ข้อ 4: ถูกต้อง")
         score += 1
     else:
@@ -104,7 +104,7 @@ is_playing = (
 if not is_playing and not st.session_state.is_ended:
     st.warning("💡 กรุณากดปุ่ม '🎮 เริ่มเล่นเกม' ด้านบนเพื่อเริ่มจับเวลาและทำโจทย์")
 
-# 2. ช่องรับคำตอบ (เปลี่ยนโจทย์ข้อ 3 และ 4 เรียบร้อยครับ)
+# 2. ช่องรับคำตอบ (ดึงคำศัพท์จากใบงาน และทำจำนวนขีดล่างตรงล็อกเป๊ะๆ)
 st.text_input(
     "ข้อ 1: An `a _ _ l e` a day keeps the doctor away. 🍎",
     key="ans1",
@@ -116,12 +116,12 @@ st.text_input(
     disabled=not is_playing,
 )
 st.text_input(
-    "ข้อ 3: Monkeys love to eat `b _ _ _ _ a`. 🍌",
+    "ข้อ 3: This fruit is yellow, sweet, and has a big seed. It is a `m _ _ _ o`. 🥭",
     key="ans3",
     disabled=not is_playing,
 )
 st.text_input(
-    "ข้อ 4: We should drink eight glasses of `w _ _ _ r` everyday. 💧",
+    "ข้อ 4: We use a `p _ _ _ _ l` to write or draw on paper. ✏️",
     key="ans4",
     disabled=not is_playing,
 )
