@@ -32,15 +32,15 @@ def show_result_dialog():
     u_ans3 = st.session_state.get("ans3", "").strip().lower()
     u_ans4 = st.session_state.get("ans4", "").strip().lower()
 
-    # ตรวจข้อ 1
+    # ตรวจข้อ 1 (apple)
     if u_ans1 == "apple":
         st.success("✅ ข้อ 1: ถูกต้อง")
         score += 1
     else:
         st.error(f"❌ ข้อ 1: ยังไม่ถูกต้อง (คุณตอบ '{u_ans1}')")
 
-    # ตรวจข้อ 2
-    if u_ans2 == "fish":
+    # ตรวจข้อ 2 (gift)
+    if u_ans2 == "gift":
         st.success("✅ ข้อ 2: ถูกต้อง")
         score += 1
     else:
@@ -70,27 +70,6 @@ def show_result_dialog():
 
 
 # ----------------------------------------------------
-# 📌 ฟังก์ชันล็อกโซนเวลานับถอยหลัง ไม่ให้กวนช่องพิมพ์
-# ----------------------------------------------------
-@st.fragment
-def countdown_timer():
-    if (
-        st.session_state.start_time is not None
-        and not st.session_state.is_ended
-    ):
-        timer_placeholder = st.empty()
-        while True:
-            time_left = int(30 - (time.time() - st.session_state.start_time))
-            if time_left > 0:
-                timer_placeholder.error(f"⏳ เหลือเวลา: {time_left} วินาที")
-                time.sleep(0.5)
-            else:
-                st.session_state.is_ended = True
-                st.rerun()
-                break
-
-
-# ----------------------------------------------------
 # 1. ปุ่มเริ่มเล่นเกม
 # ----------------------------------------------------
 st.button("🎮 เริ่มเล่นเกม / รีเซ็ตเกม", on_click=reset_game)
@@ -104,14 +83,14 @@ is_playing = (
 if not is_playing and not st.session_state.is_ended:
     st.warning("💡 กรุณากดปุ่ม '🎮 เริ่มเล่นเกม' ด้านบนเพื่อเริ่มจับเวลาและทำโจทย์")
 
-# 2. ช่องรับคำตอบ (ดึงคำศัพท์จากใบงาน และทำจำนวนขีดล่างตรงล็อกเป๊ะๆ)
+# 2. ช่องรับคำตอบ
 st.text_input(
     "ข้อ 1: An `a _ _ l e` a day keeps the doctor away. 🍎",
     key="ans1",
     disabled=not is_playing,
 )
 st.text_input(
-    "ข้อ 2: Cats love to eat `f _ s h`. 🐟",
+    "ข้อ 2: I give a `g _ _ t` to my friend on their birthday. 🎁",
     key="ans2",
     disabled=not is_playing,
 )
@@ -126,11 +105,20 @@ st.text_input(
     disabled=not is_playing,
 )
 
-# 3. แสดงเวลานับถอยหลัง และปุ่มส่งคำตอบ
+# 3. แถบแสดงเวลานับถอยหลัง และปุ่มส่งคำตอบ
 if is_playing:
-    countdown_timer()
+    time_left = int(30 - (time.time() - st.session_state.start_time))
 
-    if st.button("📥 ส่งคำตอบ"):
+    if time_left > 0:
+        st.error(f"⏳ เหลือเวลา: {time_left} วินาที")
+
+        if st.button("📥 ส่งคำตอบ"):
+            st.session_state.is_ended = True
+            st.rerun()
+
+        time.sleep(1)
+        st.rerun()
+    else:
         st.session_state.is_ended = True
         st.rerun()
 
