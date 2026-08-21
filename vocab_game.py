@@ -12,9 +12,8 @@ if "is_ended" not in st.session_state:
 
 # 📌 ฟังก์ชันเคลียร์ค่าเมื่อกดปุ่มเริ่มใหม่
 def reset_game():
-    for k in ["ans1", "ans2", "ans3", "ans4"]:
-        if k in st.session_state:
-            st.session_state[k] = ""
+    for k in ["ans1_val", "ans2_val", "ans3_val", "ans4_val"]:
+        st.session_state[k] = ""
     st.session_state.start_time = time.time()  # เริ่มเวลาใหม่
     st.session_state.is_ended = False  # รีเซ็ตสถานะจบเกม
 
@@ -27,10 +26,11 @@ def show_result_dialog():
     st.balloons()
     score = 0
 
-    u_ans1 = st.session_state.get("ans1", "").strip().lower()
-    u_ans2 = st.session_state.get("ans2", "").strip().lower()
-    u_ans3 = st.session_state.get("ans3", "").strip().lower()
-    u_ans4 = st.session_state.get("ans4", "").strip().lower()
+    # ดึงค่าจากตัวแปรตรงๆ ป้องกันปัญหาลืมกด Enter
+    u_ans1 = st.session_state.get("ans1_val", "").strip().lower()
+    u_ans2 = st.session_state.get("ans2_val", "").strip().lower()
+    u_ans3 = st.session_state.get("ans3_val", "").strip().lower()
+    u_ans4 = st.session_state.get("ans4_val", "").strip().lower()
 
     # ตรวจข้อ 1 (apple)
     if u_ans1 == "apple":
@@ -83,25 +83,35 @@ is_playing = (
 if not is_playing and not st.session_state.is_ended:
     st.warning("💡 กรุณากดปุ่ม '🎮 เริ่มเล่นเกม' ด้านบนเพื่อเริ่มจับเวลาและทำโจทย์")
 
+# สร้างตัวแปรเก็บค่าชั่วคราวเผื่อยังไม่มีในระบบ
+if "ans1_val" not in st.session_state:
+    st.session_state.ans1_val = ""
+if "ans2_val" not in st.session_state:
+    st.session_state.ans2_val = ""
+if "ans3_val" not in st.session_state:
+    st.session_state.ans3_val = ""
+if "ans4_val" not in st.session_state:
+    st.session_state.ans4_val = ""
+
 # 2. ช่องรับคำตอบ
-st.text_input(
+st.session_state.ans1_val = st.text_input(
     "ข้อ 1: An `a _ _ l e` a day keeps the doctor away. 🍎",
-    key="ans1",
+    value=st.session_state.ans1_val,
     disabled=not is_playing,
 )
-st.text_input(
+st.session_state.ans2_val = st.text_input(
     "ข้อ 2: I give a `g _ _ t` to my friend on their birthday. 🎁",
-    key="ans2",
+    value=st.session_state.ans2_val,
     disabled=not is_playing,
 )
-st.text_input(
+st.session_state.ans3_val = st.text_input(
     "ข้อ 3: This fruit is yellow, sweet, and has a big seed. It is a `m _ _ _ o`. 🥭",
-    key="ans3",
+    value=st.session_state.ans3_val,
     disabled=not is_playing,
 )
-st.text_input(
+st.session_state.ans4_val = st.text_input(
     "ข้อ 4: We use a `p _ _ _ _ l` to write or draw on paper. ✏️",
-    key="ans4",
+    value=st.session_state.ans4_val,
     disabled=not is_playing,
 )
 
